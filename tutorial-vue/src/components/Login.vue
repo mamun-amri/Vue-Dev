@@ -102,6 +102,8 @@
 </template>
 
 <script setup>
+import { useRoute, useRouter } from "vue-router";
+
 import { reactive, computed } from "vue";
 import { useUserStore } from "../stores/user";
 
@@ -115,11 +117,14 @@ const isLogin = computed(() => {
 });
 
 const user = useUserStore();
+const router = useRouter();
+const route = useRoute();
 
 const loginProcess = () => {
   console.log("login", isLogin.value);
   if (isLogin.value == 1) {
     user.login(data.username, 1);
+    router.replace("/");
   }
   console.log(user.listUser.username);
 };
