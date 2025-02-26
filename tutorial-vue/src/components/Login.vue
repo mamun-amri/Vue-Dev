@@ -23,7 +23,7 @@
           >
             Sign in to your account
           </h1>
-          <form class="space-y-4 md:space-y-6" action="#">
+          <form class="space-y-4 md:space-y-6" @submit.prevent="loginProcess">
             <div>
               <label
                 for="email"
@@ -31,11 +31,12 @@
                 >Your email</label
               >
               <input
-                type="email"
-                name="email"
-                id="email"
+                v-model="data.username"
+                type="text"
+                name="username"
+                id="username"
                 class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="name@company.com"
+                placeholder="username"
                 required=""
               />
             </div>
@@ -46,6 +47,7 @@
                 >Password</label
               >
               <input
+                v-model="data.password"
                 type="password"
                 name="password"
                 id="password"
@@ -56,7 +58,7 @@
             </div>
             <div class="flex items-center justify-between">
               <div class="flex items-start">
-                <div class="flex items-center h-5">
+                <!-- <div class="flex items-center h-5">
                   <input
                     id="remember"
                     aria-describedby="remember"
@@ -69,7 +71,7 @@
                   <label for="remember" class="text-gray-500 dark:text-gray-300"
                     >Remember me</label
                   >
-                </div>
+                </div> -->
               </div>
               <a
                 href="#"
@@ -94,8 +96,31 @@
           </form>
         </div>
       </div>
+      isLogin {{ isLogin }} username {{ user.listUser.username }}
     </div>
   </section>
 </template>
 
-<script setup></script>
+<script setup>
+import { reactive, computed } from "vue";
+import { useUserStore } from "../stores/user";
+
+const data = reactive({
+  username: "",
+  password: "",
+});
+
+const isLogin = computed(() => {
+  return data.username != "" && data.password == "admin" ? 1 : 0;
+});
+
+const user = useUserStore();
+
+const loginProcess = () => {
+  console.log("login", isLogin.value);
+  if (isLogin.value == 1) {
+    user.login(data.username, 1);
+  }
+  console.log(user.listUser.username);
+};
+</script>
