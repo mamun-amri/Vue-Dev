@@ -102,10 +102,12 @@
 </template>
 
 <script setup>
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 
 import { reactive, computed } from "vue";
 import { useUserStore } from "../stores/user";
+
+const KEY_LOGIN = import.meta.env.VITE_KEY_LOGIN;
 
 const data = reactive({
   username: "",
@@ -118,14 +120,19 @@ const isLogin = computed(() => {
 
 const user = useUserStore();
 const router = useRouter();
-const route = useRoute();
 
 const loginProcess = () => {
   console.log("login", isLogin.value);
   if (isLogin.value == 1) {
     user.login(data.username, 1);
-    router.replace("/");
+    router.replace("/home");
+    localStorage.setItem(KEY_LOGIN, JSON.stringify(user.$state));
   }
   console.log(user.listUser.username);
 };
+const login = localStorage.getItem(KEY_LOGIN);
+const dataLogin = login ? JSON.parse(login) : "";
+if (dataLogin.username) {
+  router.replace("/home");
+}
 </script>

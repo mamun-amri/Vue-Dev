@@ -9,8 +9,8 @@ import Sidebar from "./components/Sidebar.vue";
 
 const pinia = createPinia();
 const routes = [
-  { path: "/", component: Sidebar },
-  { path: "/login", component: Login },
+  { path: "/", component: Login },
+  { path: "/home", component: Sidebar },
 ];
 const router = createRouter({
   history: createMemoryHistory(),
